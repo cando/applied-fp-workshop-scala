@@ -1,5 +1,7 @@
 package application
 
+import cats.instances.int
+
 /*
     ## V1 - Focus on the center (pure domain logic)
 
@@ -14,9 +16,31 @@ object Version1 {
 
   // TODO 1: Those type alias are only placeholders,
   //  use correct type definitions and feel free to add more...
-  type Rover = String
-  type Planet = String
-  type Command = String
+
+  sealed case class Position(x: Int, y: Int)
+
+  // type Obstacle = Position
+  sealed case class Obstacle(position: Position)
+
+  sealed case class Size(width: Int, height: Int)
+
+  enum Orientation {
+    case North
+    case Sud
+    case West
+    case East
+  }
+
+  case class Rover(position: Position, orientation: Orientation)
+
+  case class Planet(size: Size, obstacles: List[Obstacle])
+
+  enum Command {
+    case TurnLeft
+    case TurnRight
+    case MoveForward(steps: Int)
+    case MoveBackward(steps: Int)
+  }
 
   // TODO 2: Execute all commands and accumulate final rover state
   def executeAll(planet: Planet, rover: Rover, commands: List[Command]): Rover = ???
